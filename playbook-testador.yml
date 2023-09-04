@@ -3,6 +3,11 @@
   hosts: all
   gather_facts: True
   become: True
+  remote_user: ansible
+  vars_files:
+    - senha.txt
+  vars:
+    ansible_password: "{{ senha }}"
   tasks:
     - name: Exibe nome e SO das máquinas
       ansible.builtin.debug:
