@@ -1,0 +1,9 @@
+---
+- name: Play testador de conexão
+  hosts: all
+  gather_facts: True
+  become: True
+  tasks:
+    - name: Exibe nome e SO das máquinas
+      ansible.builtin.debug:
+        msg: "Nome: {{ ansible_nodename }}; Sistema operacional: {{ ansible_os_family }}"
