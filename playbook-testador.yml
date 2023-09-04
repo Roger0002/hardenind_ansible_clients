@@ -6,4 +6,4 @@
   tasks:
     - name: Exibe nome e SO das máquinas
       ansible.builtin.debug:
-        msg: "Nome: {{ ansible_nodename }}; Sistema operacional: {{ ansible_os_family }}"
+        msg: "Nome: {{ ansible_nodename }}; IP {{ ansible_default_ipv4 }}"
