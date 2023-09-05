@@ -9,6 +9,7 @@
   vars:
     ansible_password: "{{ senha }}"
   tasks:
-    - name: Exibe nome e SO das máquinas
+    - name: Exibe nome e SO de todas as máquinas do parque
       ansible.builtin.debug:
         msg: "Nome: {{ ansible_nodename }}; IP: {{ ansible_default_ipv4.address }}"
+...
