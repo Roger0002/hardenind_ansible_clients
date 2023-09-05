@@ -1,0 +1,16 @@
+---
+- name: Play testador de conexão (ambiente de produção)
+  hosts: prod
+  gather_facts: True
+  become: True
+  remote_user: ansibleprod
+  vars_files:
+    - senha.txt
+  vars:
+    ansible_ssh_private_key_file: "~ansibleprod/.ssh/id_rsa"
+    ansible_become_password: "{{ senhaprod }}"
+  tasks:
+    - name: Exibe nome e SO das máquinas de produção
+      ansible.builtin.debug:
+        msg: "Nome: {{ ansible_nodename }}; IP: {{ ansible_default_ipv4.address }}"
+...
