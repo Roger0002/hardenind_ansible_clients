@@ -1,0 +1,40 @@
+---
+- name: Play de hardening
+  hosts: all
+  gather_facts: False
+  become: True
+  remote_user: ansible
+  vars_files:
+    - senha.txt
+  vars:
+    ansible_password: "{{ senha }}"
+    grupo_ansible_users: "ansibleusers"
+    ip_servidor_ansible: "172.16.0.9"
+    
+  tasks:
+    - name: Impedir usuários do grupo ansibleusers de autenticarem-se por senha
+      ansible.builtin.blockinfile:
+        backup: True
+        path: "/etc/ssh/sshd_config"
+        block: |
+          Match Group {{ grupo_ansible_users }}
+          PasswordAuthentication no
+          KbdInteractiveAuthentication no
+          Match all
+      notify:
+        - Reiniciar o daemon sshd
+
+    - name: Impedir usuários do grupo ansibleusers de autenticarem-se de fora do ansible node
+      ansible.builtin.blockinfile:
+        backup: True
+        path: "/etc/security/access.conf"
+        block: |
+          +:ansibleusers:{{ ip_servidor_ansible }} LOCAL
+          -:ansibleusers:ALL
+
+  handlers:
+    - name: Reiniciar o daemon sshd
+      ansible.builtin.service:
+        name: "sshd"
+        state: "restarted"
+...
