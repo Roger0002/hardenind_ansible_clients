@@ -32,6 +32,10 @@
           +:ansibleusers:{{ ip_servidor_ansible }} LOCAL
           -:ansibleusers:ALL
 
+    - name: Remover cache do sssd
+      ansible.builtin.shell:
+        cmd: "sss_cache -E"
+
   handlers:
     - name: Reiniciar o daemon sshd
       ansible.builtin.service:
